@@ -3,7 +3,16 @@ class PostsController < ApplicationController
   before_action :authenticate_user!, :only => [:create, :destroy]
 
   def index
-    @posts = Post.order("id DESC").all
+    @posts = Post.order("id DESC").limit(20)
+
+    if params[:max_id]
+      @posts = @posts.where( "id < ?", params[:max_id])
+    end
+
+    respond_to do |format|
+      format.html # 如果客户端要求html，则回传index.html.erb
+      format.js # 如果客户端要求javascript，回传index.js.erb
+    end
   end
 
   def create
