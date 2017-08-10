@@ -8,13 +8,12 @@ get "/jquery-3" => "pages#jquery_3"
 get "/jquery-4" => "pages#jquery_4"
 get "/jquery-5" => "pages#jquery_5"
 
-resources :posts do
-  member do
-    post "like" => "posts#like"
-    post "unlike" => "posts#unlike"
+  resources :posts do
+    member do
+      post "like" => "posts#like"
+      post "unlike" => "posts#unlike"
+     end
   end
-end
-
 
 root "posts#index"
 

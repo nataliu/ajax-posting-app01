@@ -10,7 +10,6 @@ class PostsController < ApplicationController
     @post = Post.new(post_params)
     @post.user = current_user
     @post.save
-
   end
 
   def destroy
@@ -19,22 +18,19 @@ class PostsController < ApplicationController
 
   end
 
-  def like
-    @post = Post.find(params[:id])
-    unless @post.find_like(current_user) # 如果已经按讚过了，就略过不再新增
-      Like.create( :user => current_user, :post => @post)
+    def like
+      @post = Post.find(params[:id])
+      unless @post.find_like(current_user)  # 如果已经按讚过了，就略过不再新增
+        Like.create( :user => current_user, :post => @post)
+      end
     end
 
-    redirect_to posts_path
-  end
-
-  def unlike
-    @post = Post.find(params[:id])
-    like = @post.find_like(current_user)
-    like.destroy
-
-    redirect_to posts_path
-  end
+    def unlike
+      @post = Post.find(params[:id])
+      like = @post.find_like(current_user)
+      like.destroy
+      render "like"
+    end
 
   protected
 
