@@ -39,8 +39,8 @@
   // 当卷轴动的时候，会触发这个事件
   $(window).scroll(function(){
     // 当卷到最下面的时候
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-      var url = "/posts?max_id=" + current_post_id;
+    if ((window.innerHeight  window.scrollY) >= document.body.offsetHeight) {
+      var url = "/posts?max_id="  current_post_id;
       if (url){
         $.ajax({
           method: "GET",
@@ -73,6 +73,7 @@
 
  $("#post-list").on('change', ".select_category", function(){
    var url = $(this).data("url");
+   var that = this;
 
    $.ajax({
      url: url,
@@ -82,8 +83,16 @@
        post: {
          category_id: $(this).val()
        }
-     }
-   })
- })
+       },
+        beforeSend: function(){
+          $(that).after( $(' <img src="/images/ajax-loader.gif" id="ajax-loading"> ') );
+          },
+        complete: function(){
+          $("#ajax-loading").remove();
+        }
+    });
+    });
+
+  $(".raty").raty( { path: '/images/' } );
 
 </script>
