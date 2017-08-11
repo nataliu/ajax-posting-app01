@@ -15,11 +15,12 @@
 
 <script>
   // 这会绑click事件到所有有‘delete-post’ class到元素上，也就是所有的删除按钮
-  $(".delete-post").click(function(evt){
+  $("#post-list").on('click', ".delete-post", function(evt){
     // 'evt'是浏览器的事件物件，evt.preventDefault(); 会终止这个元素的默认行为：
     evt.preventDefault();
     // this 是个特别的变量，代表触发事件的元素，使用attr可以读取元素的属性，这里要拿到超链接的网址。
     var url = $(this).attr("href");
+    var that = this;
 
     // 送出ajax
     $.ajax({
@@ -27,7 +28,7 @@
       method: 'DELETE',
       dataType: ‘json’, //要求服务器回传json
       success: function(data) { // data 就是服务器回传的 json 资料
-        $("#post-" + data["id"]).remove();
+        $(that).closest(".panel").remove();
       }
     })
   })
@@ -51,5 +52,23 @@
       }
     }
   })
+
+ $("#post-list").on('change', ".toggle-flag", function(){
+   var url = $(this).data("url");
+   var that = this;
+
+   $.ajax({
+     url: url,
+     method: "POST",
+     dataType: "json",
+     success: function(data){
+       if ( data["flag_at"] ) {
+         $(that).closest("label").find("span").html(data["flag_at"]);
+       } else {
+         $(that).closest("label").find("span").html("");
+       }
+     }
+   });
+ });
 
 </script>

@@ -12,6 +12,7 @@ get "/jquery-5" => "pages#jquery_5"
     member do
       post "like" => "posts#like"
       post "unlike" => "posts#unlike"
+      post "toggle_flag" => "posts#toggle_flag"
      end
   end
 
